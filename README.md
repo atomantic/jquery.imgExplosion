@@ -12,7 +12,7 @@ This is a fancy animation effect that throws a bunch of clones of an image onto 
 It randomizes the size of the image between a min constraint and the maximum size of the source graphic.
 It also, optionally, explodes at the end as it fades out.
 
-The explosion requires jquery.ui
+The explosion effect at the end of the image's journey into the page requires jquery.ui--but if you omit jquery.ui, the code will fallback on a simple fadeOut.
 
 #Usage:#
 
@@ -68,5 +68,6 @@ The explosion requires jquery.ui
 		});
 	</script>
 
+#Demos:#
 The repository holds a demo in index.html, which is published on the github project page:
 [Demo](http://atomantic.github.com/jquery.imgExplosion)
