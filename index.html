@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>jquery.imgExplosion: Demo</title>
+	<style>
+	.demo {
+		border:1px solid #369;
+		padding:10px;
+		text-align:center;
+		float:left;
+		width:200px;
+		margin-right:10px;
+	}
+	</style>
+</head>
+<body>
+	<a href="http://github.com/atomantic/jquery.imgExplosion"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+	<h1>jquery.imgExplosion Demos</h1>
+	
+	<h2>Using Defaults</h2>
+	<p>The library comes with a star graphic, assumed stored in /img/star.png, which it uses as the default:</p>
+	
+	<button id="StarsUp">Defaults</button>
+	<button id="StarsDown">Stars: raining down</button>
+	<button id="StarsNoExplode">Stars: no explosion</button>
+	<button id="StarsNoRotate">Stars: no rotation</button>
+	
+	<h2>Attaching to an image on the page</h2>
+	<div class="demo">
+		<img id="Ninja" src="ninja.png" />
+		<p>Throw at an angle</p>
+		<button id="Image1">Fire</button>
+	</div>
+	<div class="demo">
+		<img id="Circle" src="starcircle.png" />
+		<p>Alternate throwing top/bottom</p>
+		<button id="Image2">Fire</button>
+	</div>
+	<div class="demo">
+		<img id="Shocked" src="shocked.png" />
+		<p>Alternate at angle</p>
+		<button id="Image3">Fire</button>
+	</div>
+	<!-- Include jQuery >= 1.4.2: [http://paulirish.com/2010/the-protocol-relative-url/](http://paulirish.com/2010/the-protocol-relative-url/) -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<!-- non google fallback -->
+	<script>!window.jQuery && document.write(unescape('%3Cscript src="jquery.min.js"%3E%3C/script%3E'))</script>
+	
+	<!-- include jquery.ui -only needed if you are using the explode effect at the end -->
+	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
+	<!-- non google fallback -->
+	<script>!window.jQuery.ui && document.write(unescape('%3Cscript src="jquery-ui.min.js"%3E%3C/script%3E'))</script>
+	
+	<script src="jquery.imgexplosion.js"></script>
+	<!-- call the plugin -->
+	<script type="text/javascript">
+		$(function(){
+			$('#StarsUp').click(function(){
+				$.fn.imgExplosion({
+					img:'star.png'
+				});
+			});
+			$('#StarsDown').click(function(){
+				$.fn.imgExplosion({
+					img:'star.png',
+					start:'top'
+				});
+			});
+			$('#StarsNoExplode').click(function(){
+				$.fn.imgExplosion({
+					img:'star.png',
+					explode:false
+				});
+			});
+			$('#StarsNoRotate').click(function(){
+				$.fn.imgExplosion({
+					img:'star.png',
+					rot:false
+				});
+			});
+			
+			$('#Image1').click(function(){
+				$('#Ninja').imgExplosion({
+					angle:true
+				});
+			});
+			$('#Image2').click(function(){
+				$('#Circle').imgExplosion({
+					alternate:true
+				});
+			});
+			$('#Image3').click(function(){
+				$('#Shocked').imgExplosion({
+					angle:true,
+					alternate:true
+				});
+			});
+		});
+	</script>
+</body>
+</html>
