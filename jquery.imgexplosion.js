@@ -171,7 +171,7 @@
 		// should we explode or just hide after throwing the image? explode requires jquery.ui
 		explode:true,	
 		// how many pieces to explode into
-		pieces:16,
+		pieces:12,
 		// how long we should run the explode animation
 		explodeTime:500,
 		// should the image rotate into the page?
