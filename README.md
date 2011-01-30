@@ -45,7 +45,7 @@ The explosion effect at the end of the image's journey into the page requires jq
 			
 			// showing all defaults in options:
 			$.fn.imgExplosion({
-				// absolute path to the image to firework (only needed if not attached to an image olready on the page)
+				// path to the image to firework (only needed if not attached to an image olready on the page)
 		     	img: '/img/star.png',
 				// how many images should we load before stopping the animation
 				num: 24,				
