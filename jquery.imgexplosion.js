@@ -65,7 +65,7 @@
 					self.throwClone();
 				};
 			})(this),
-		   300
+		   this.opt.interval
 		);
     };
     /**
@@ -160,6 +160,8 @@
     imgExplosion.defaults = {
 		// path to the image to firework (only needed if not attached to an image olready on the page)
      	img: '/img/star.png',
+		// how many miliseconds between throws
+		interval:300,
 		// how many images should we load before stopping the animation
 		num: 24,				
 		// minimum random width of the image in pixels
