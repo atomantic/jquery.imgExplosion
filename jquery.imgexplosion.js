@@ -65,64 +65,73 @@
 					self.throwClone();
 				};
 			})(this),
-			this.opt.interval
+		   this.opt.interval
 		);
     };
     /**
 	 * Throw a clone of the image (this is the interval method)
 	 */
     imgExplosion.prototype.throwClone = function() {
+		var o = this.opt; // short cache
 		this.counter++;
-		if(this.counter > this.opt.num){
+		if(this.counter > o.num){
 			clearInterval(this.interval);
 			return;
 		}
-		var o = this.opt,
-			w = this.randBetween(o.min,this.imgW), // new width
+		// handle alternating
+		if(o.alternate){
+			o.start = o.start==='bottom'?'top':'bottom';
+		}
+		var w = this.randBetween(o.min,this.imgW), // new width
 		    x = this.randBetween(0,this.dw-this.diam), // new x coordinate (padded)
+			y = o.inPlace ? this.randBetween(this.diam,this.maxOffset) : this.diam-this.imgW,
 			r = this.randBetween(0,180), // new rotation
+			throwTime = this.randBetween(o.minThrow,o.maxThrow),
+			halfw = w/2,
 		    cln = this.img.clone()
 				// randomize starting left offset
 				.css('left',x+'px')
+				// starting y offset
+				.css(o.start,y+'px')
+				// start visible
+				//.css('display','block')
 				// randomize rotation
 				.css('rotation',r+'deg')
 				.css('-moz-transform','rotate('+r+'deg)')
 				.css('-webkit-transform','rotate('+r+'deg)')
 				.data('rot',1) // initial rotation to increment
-				.width(w).show(),
+				.width(0).show(),
 			runs = 0,
 			r = 0,
-			anim = {};
-		// handle alternating
-		if(o.alternate){
-			o.start = o.start==='bottom'?'top':'bottom';
-		}
-		// set initial start position
-		if(o.start==='bottom'){
-			// make sure the image doesn't cause scrollbar by offsetting 
-			// it from the bottom of the page enough that it can have a random rotation
-			cln.css('bottom',this.diam-this.imgW);
-		}else{
-			cln.css(o.start,'0px');
-		}
+			anim = { // must insure that at least one css prop is animated (lets grow it)
+				'width':w,
+				'padding-right':halfw
+			},
+			animComplete = function() {
+				var t = $(this);
+				if(o.explode && jQuery.ui){
+					t.hide('explode', { pieces: o.pieces }, o.explodeTime);
+				}else{
+					t.fadeOut();
+				}
+				clearInterval(t.get(0).intv);
+			};
 		// add the 'bottom' or 'top' css prop to the animation config	
-		anim[o.start] = '+='+this.randBetween(200,this.maxOffset);
-		
-		if(o.angle){
-			anim.left = this.randBetween(0,this.dw-this.diam);
+		if(!this.opt.inPlace){
+			anim[o.start] = '+='+this.randBetween(200,this.maxOffset);
+			if(o.angle){
+				anim.left = this.randBetween(0,this.dw-this.diam);
+			}
+		}else{
+			anim.left = x - halfw;
+			anim[o.start] = y + (o.start==='bottom' ? -halfw : halfw);
 		}
 		// actually stick it on the page
 		$('body').append(cln);
+		
 		// start throw animation
-		cln.animate(anim, this.randBetween(o.minThrow,o.maxThrow), function() {
-			var t = $(this);
-			if(o.explode && jQuery.ui){
-				t.hide('explode', { pieces: o.pieces }, o.explodeTime);
-			}else{
-				t.fadeOut();
-			}
-			clearInterval(t.get(0).intv);
-		});
+		cln.animate(anim, throwTime, animComplete);
+		
 		if(o.rot){
 			// since jquery can't handle animating a transform css attribute with a value like 'rotate(300deg)'
 			// we have to hack it with a setInterval
@@ -160,8 +169,10 @@
     imgExplosion.defaults = {
 		// path to the image to firework (only needed if not attached to an image olready on the page)
      	img: '/img/star.png',
+		// set inPlace to true if you don't want the image to be thrown (just appear and explode/fade)
+		inPlace:false,
 		// how many miliseconds between throws
-		interval:600,
+		interval:800,
 		// how many images should we load before stopping the animation
 		num: 24,				
 		// minimum random width of the image in pixels
@@ -173,7 +184,7 @@
 		// should we explode or just hide after throwing the image? explode requires jquery.ui
 		explode:true,	
 		// how many pieces to explode into
-		pieces:12,
+		pieces:16,
 		// how long we should run the explode animation
 		explodeTime:500,
 		// should the image rotate into the page?
