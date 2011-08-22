@@ -44,9 +44,12 @@
         var d = this.img.get(0);
         this.imgW = d.width;
         this.imgH = d.height;
-        
+
         this.diam = Math.ceil(Math.sqrt(Math.pow(d.width,2) + Math.pow(d.height,2)));
-        
+
+        if (this.opt.centerOn){
+            this.opt.inPlace = true;
+        }
         // cache document width. TODO: handle window resize while running.
         this.dw = $(document).width();
         this.dh = $(document).height();
@@ -80,13 +83,29 @@
             return;
         }
         // handle alternating
-        if(o.alternate){
+        if(o.centerOn) {
+            o.start = 'top';
+        } else if (o.alternate) {    
+            // add the 'bottom' or 'top' css prop to the animation config
             o.start = o.start==='bottom'?'top':'bottom';
         }
-        var w = this.randBetween(o.min,this.imgW), // new width
-            x = this.randBetween(0,this.dw-this.diam), // new x coordinate (padded)
-            y = o.inPlace ? this.randBetween(this.diam,this.maxOffset) : this.diam-this.imgW,
-            r = this.randBetween(0,180), // new rotation
+
+        var x = null;
+        if (o.centerOn) {
+            x = this.randBetween(o.centerOn.offsetLeft, o.centerOn.offsetLeft + o.centerOn.offsetWidth);
+        } else {
+            x = this.randBetween(0,this.dw-this.diam); // new x coordinate (padded)
+        }
+
+        var y = null;
+        if (o.centerOn) {
+            y = this.randBetween(o.centerOn.offsetTop, o.centerOn.offsetTop + o.centerOn.offsetHeight);
+        } else {
+            y = o.inPlace ? this.randBetween(this.diam,this.maxOffset) : this.diam-this.imgW;
+        }
+
+        var w = this.randBetween(o.min,this.imgW+30), // new width
+            r = this.randBetween(0,360), // new rotation
             throwTime = this.randBetween(o.minThrow,o.maxThrow),
             halfw = w/2,
             cln = this.img.clone()
@@ -101,9 +120,10 @@
                 .css('-moz-transform','rotate('+r+'deg)')
                 .css('-webkit-transform','rotate('+r+'deg)')
                 .data('rot',1) // initial rotation to increment
+                .data('rotateSpeed',o.rotateSpeed)
                 .width(0).show(),
             anim = { // must insure that at least one css prop is animated (lets grow it)
-                'width':w,
+                'width':w + this.randBetween(0,o.extraWidth),
                 'padding-right':halfw
             },
             animComplete = function() {
@@ -113,21 +133,40 @@
                 }else{
                     t.fadeOut();
                 }
+                t.data('finished', true);
                 clearInterval(t.get(0).intv);
             };
-        // add the 'bottom' or 'top' css prop to the animation config    
-        if(!this.opt.inPlace){
+        if(this.opt.centerOn){
+            /* if we just put the target coords anywhere, something we're centered on
+            * will 'bleed' to right if it's on the left or vice versa. so we first
+            * make sure there's a 50% chance that it's exploding to either side of
+            * the centered object, then pick a random spot on that side. */
+            if (Math.random() > 0.5) {
+                anim.left = this.randBetween(0, x);
+            } else {
+                anim.left = this.randBetween(x, this.dw - this.imgW);
+            }
+
+            if (Math.random() > 0.5) {
+                anim.top = this.randBetween(0,y);
+            } else {
+                anim.top = this.randBetween(y,this.dh - this.imgH);
+            }
+        }else if (this.opt.inPlace) {
+            anim.left = x - halfw;
+            anim[o.start] = y + (o.start==='bottom' ? -halfw : halfw);
+        } else {
             anim[o.start] = '+='+this.randBetween(200,this.maxOffset);
             if(o.angle){
                 anim.left = this.randBetween(0,this.dw-this.diam);
             }
-        }else{
-            anim.left = x - halfw;
-            anim[o.start] = y + (o.start==='bottom' ? -halfw : halfw);
         }
         // actually stick it on the page
         $('body').append(cln);
         
+        anim.rotation = r+'deg';
+        anim['-moz-transform'] = 'rotate('+r+'deg)';
+        anim['-webkit-transform'] = 'rotate('+r+'deg)';
         // start throw animation
         cln.animate(anim, throwTime, animComplete);
         
@@ -145,11 +184,12 @@
                 15
             );
         }
+        
         return this;
     };
     imgExplosion.prototype.rotAnimation = function(cln) {
-        var r = cln.data('rot') + 5;
-        if(r>300){ // make sure we don't leave excessive intervals running on the page
+        var r = cln.data('rot') + cln.data('rotateSpeed');
+        if(cln.data('finished')){ // make sure we don't leave excessive intervals running on the page
             clearInterval(cln.intv);
             return;
         }
@@ -194,15 +234,19 @@
         // should we randomize the ending x coordinate (thrown at angle)?
         angle:false,
         // what z-index should we lay them on (default setting throws it over a jquery.ui dialog overlay--but behind modal dialog)
-        z: 1001
+        z: 1001,
+        // what to center an explosion outward from
+        centerOn:false,
+        // grow the image randomly beyond its normal size by this many pixels
+        extraWidth: 0,
+        // how fast to rotate the image
+        rotateSpeed: 5
     };
 
     /**
      * jQuery fn
      * 
      * @param obj opt The config options
-     * 
-     * @return instance of gmapDirections
      */
     $.fn.imgExplosion = function(opt) {
         if (!this.length) {
