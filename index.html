@@ -1,155 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8" />
-	<title>jquery.imgExplosion: Demo</title>
-	<style>
-	.demo {
-		border:1px solid #369;
-		padding:10px;
-		text-align:center;
-		float:left;
-		width:300px;
-		margin:10px;
-		height:300px;
-	}
-	.demo pre {
-		text-align:left;
-	}
-	</style>
+    <meta charset="utf-8" />
+    <title>jquery.imgExplosion: Demo</title>
+    <style>
+    .demo {
+        border:1px solid #369;
+        padding:10px;
+        text-align:center;
+        float:left;
+        width:300px;
+        margin:10px;
+        height:300px;
+    }
+    .demo pre {
+        text-align:left;
+    }
+    </style>
 </head>
 <body>
-	<a href="http://github.com/atomantic/jquery.imgExplosion"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-	<h1>jquery.imgExplosion Demos</h1>
-	
-	<h2>Using Defaults</h2>
-	<p>The library comes with a star graphic, assumed stored in /img/star.png, which it uses as the default:</p>
-	
-	<button id="StarsUp">Defaults</button>
-	<button id="StarsDown">Stars: raining down</button>
-	<button id="StarsNoExplode">Stars: no explosion</button>
-	<button id="StarsNoRotate">Stars: no rotation</button>
+    <a href="http://github.com/atomantic/jquery.imgExplosion"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+    <h1>jquery.imgExplosion Demos</h1>
+    
+    <h2>Using Defaults</h2>
+    <p>The library comes with a star graphic, assumed stored in /img/star.png, which it uses as the default:</p>
+    
+    <button id="StarsUp">Defaults</button>
+    <button id="StarsDown">Stars: raining down</button>
+    <button id="StarsNoExplode">Stars: no explosion</button>
+    <button id="StarsNoRotate">Stars: no rotation</button>
 <h3>Simplest Invocation (defaults)</h3>
 <pre class="brush: js">
-	imgExplosion();
+    imgExplosion();
 </pre>
-	<h2>Advanced: No Explode, Static Position, Using Images on the Page, etc</h2>
-	<div class="demo">
-		<img src="star.png" width="50" />
-		<p>in place, fade, no-rotate, fast, lots</p>
-		<button id="InPlace">Fire</button>
+    <h2>Advanced: No Explode, Static Position, Using Images on the Page, etc</h2>
+    <div class="demo">
+        <img src="star.png" width="50" />
+        <p>in place, fade, no-rotate, fast, lots</p>
+        <button id="InPlace">Fire</button>
 <pre class="brush: js">
-	$.fn.imgExplosion({
-		inPlace:true,
-		rot:false,
-		interval:200,
-		explode:false,
-		num:50
-	});</pre>
-	</div>
-	<div class="demo">
-		<img id="Ninja" src="ninja.png" width="50" />
-		<p>Throw at an angle</p>
-		<button id="Image1">Fire</button>
+    $.fn.imgExplosion({
+        inPlace:true,
+        rot:false,
+        interval:200,
+        explode:false,
+        num:50
+    });</pre>
+    </div>
+    <div class="demo">
+        <img id="Ninja" src="ninja.png" width="50" />
+        <p>Throw at an angle</p>
+        <button id="Image1">Fire</button>
 <pre class="brush: js">
-	$('#Ninja').imgExplosion({
-		angle:true
-	});
+    $('#Ninja').imgExplosion({
+        angle:true
+    });
 </pre>
-	</div>
-	<div class="demo">
-		<img id="Circle" src="starcircle.png" width="50" />
-		<p>Alternate throwing top/bottom</p>
-		<button id="Image2">Fire</button>
+    </div>
+    <div class="demo">
+        <img id="Circle" src="starcircle.png" width="50" />
+        <p>Alternate throwing top/bottom</p>
+        <button id="Image2">Fire</button>
 <pre class="brush: js">
-	$('#Circle').imgExplosion({
-		alternate:true
-	});
+    $('#Circle').imgExplosion({
+        alternate:true
+    });
 </pre>
-	</div>
-	<div class="demo">
-		<img id="Shocked" src="shocked.png" width="50" />
-		<p>Alternate at angle</p>
-		<button id="Image3">Fire</button>
+    </div>
+    <div class="demo">
+        <img id="Shocked" src="shocked.png" width="50" />
+        <p>Alternate at angle</p>
+        <button id="Image3">Fire</button>
 <pre class="brush: js">
-	$('#Shocked').imgExplosion({
-		angle:true,
-		alternate:true
-	});
+    $('#Shocked').imgExplosion({
+        angle:true,
+        alternate:true
+    });
 </pre>
-	</div>
-	<!-- Include jQuery >= 1.5.1: [http://paulirish.com/2010/the-protocol-relative-url/](http://paulirish.com/2010/the-protocol-relative-url/) -->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-	<!-- non google fallback -->
-	<script>!window.jQuery && document.write(unescape('%3Cscript src="jquery.min.js"%3E%3C/script%3E'))</script>
-	
-	<!-- include jquery.ui -only needed if you are using the explode effect at the end -->
-	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
-	<!-- non google fallback -->
-	<script>!window.jQuery.ui && document.write(unescape('%3Cscript src="jquery-ui.min.js"%3E%3C/script%3E'))</script>
-	
-	<!-- Include *at least* the core style and default theme -->
-	<!--link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
-	<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
-	<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
-	<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js" type="text/javascript"></script-->
-	
-	<script src="jquery.imgexplosion.js"></script>
-	<!-- call the plugin -->
-	<script type="text/javascript">
-		$(function(){
-			//SyntaxHighlighter.all();
-			$('#StarsUp').click(function(){
-				$.fn.imgExplosion({
-					img:'star.png'
-				});
-			});
-			$('#StarsDown').click(function(){
-				$.fn.imgExplosion({
-					img:'star.png',
-					start:'top'
-				});
-			});
-			$('#StarsNoExplode').click(function(){
-				$.fn.imgExplosion({
-					img:'star.png',
-					explode:false
-				});
-			});
-			$('#StarsNoRotate').click(function(){
-				$.fn.imgExplosion({
-					img:'star.png',
-					rot:false
-				});
-			});
-			
-			$('#Image1').click(function(){
-				$('#Ninja').imgExplosion({
-					angle:true
-				});
-			});
-			$('#Image2').click(function(){
-				$('#Circle').imgExplosion({
-					alternate:true
-				});
-			});
-			$('#Image3').click(function(){
-				$('#Shocked').imgExplosion({
-					angle:true,
-					alternate:true
-				});
-			});
-			$('#InPlace').click(function(){
-				$.fn.imgExplosion({
-					img:'star.png',
-					inPlace:true,
-					rot:false,
-					interval:200,
-					explode:false,
-					num:50
-				});
-			});
-		});
-	</script>
+  </div>
+    <div class="demo">
+        <img id="Burst" src="ninja.png" width="50" />
+        <p>Burst</p>
+        <button id="Image4">Fire</button>
+<pre class="brush: js">
+    $('#Burst').imgExplosion({
+        angle:true,
+        centerOn:this,
+        interval:2,
+        minThrow:500,
+        maxThrow:1300,
+        angle:true,
+        explode: false,
+        extraWidth:200,
+        rotateSpeed:30
+    });
+</pre>
+  </div>
+    <!-- Include jQuery >= 1.5.1: [http://paulirish.com/2010/the-protocol-relative-url/](http://paulirish.com/2010/the-protocol-relative-url/) -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <!-- non google fallback -->
+    <script>!window.jQuery && document.write(unescape('%3Cscript src="jquery.min.js"%3E%3C/script%3E'))</script>
+    
+    <!-- include jquery.ui -only needed if you are using the explode effect at the end -->
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
+    <!-- non google fallback -->
+    <script>!window.jQuery.ui && document.write(unescape('%3Cscript src="jquery-ui.min.js"%3E%3C/script%3E'))</script>
+    
+    <!-- Include *at least* the core style and default theme -->
+    <!--link href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+    <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+    <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js" type="text/javascript"></script-->
+    
+    <script src="jquery.imgexplosion.js"></script>
+    <!-- call the plugin -->
+    <script type="text/javascript">
+        $(function(){
+            //SyntaxHighlighter.all();
+            $('#StarsUp').click(function(){
+                $.fn.imgExplosion({
+                    img:'star.png'
+                });
+            });
+            $('#StarsDown').click(function(){
+                $.fn.imgExplosion({
+                    img:'star.png',
+                    start:'top'
+                });
+            });
+            $('#StarsNoExplode').click(function(){
+                $.fn.imgExplosion({
+                    img:'star.png',
+                    explode:false
+                });
+            });
+            $('#StarsNoRotate').click(function(){
+                $.fn.imgExplosion({
+                    img:'star.png',
+                    rot:false
+                });
+            });
+            
+            $('#Image1').click(function(){
+                $('#Ninja').imgExplosion({
+                    angle:true
+                });
+            });
+            $('#Image2').click(function(){
+                $('#Circle').imgExplosion({
+                    alternate:true
+                });
+            });
+            $('#Image3').click(function(){
+                $('#Shocked').imgExplosion({
+                    angle:true,
+                    alternate:true
+                });
+            });
+            $('#Image4').click(function(){
+                $('#Burst').imgExplosion({
+                    angle:true,
+                    centerOn:this,
+                    interval:2,
+                    minThrow:500,
+                    maxThrow:1300,
+                    angle:true,
+                    num:60,
+                    explode: false,
+                    extraWidth:200,
+                    rotateSpeed:30
+                });
+            });
+            $('#InPlace').click(function(){
+                $.fn.imgExplosion({
+                    img:'star.png',
+                    inPlace:true,
+                    rot:false,
+                    interval:200,
+                    explode:false,
+                    num:50
+                });
+            });
+        });
+    </script>
 </body>
 </html>
